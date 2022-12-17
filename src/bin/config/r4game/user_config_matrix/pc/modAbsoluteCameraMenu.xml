@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<UserConfig>
+
+	<!-- ##### Exploration ##### -->
+	<!-- Normal Exploration -->
+	<Group id="ACexp" displayName="Mods.rgtAC_ModName.rgtAC_Exploration.rgtAC_NormalExploration">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Meditation -->
+	<Group id="ACmed" displayName="Mods.rgtAC_ModName.rgtAC_Exploration.rgtAC_Meditation">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACexpMedForPoPON" displayName="rgtAC_UseThisCameraForPlacesofPower" displayType="TOGGLE"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Clue -->
+	<Group id="ACclue" displayName="Mods.rgtAC_ModName.rgtAC_Exploration.rgtAC_InvestigatingClue">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Swimming -->
+	<Group id="ACswim" displayName="Mods.rgtAC_ModName.rgtAC_Exploration.rgtAC_Swimming">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Sprint -->
+	<Group id="ACsprint" displayName="Mods.rgtAC_ModName.rgtAC_Exploration.rgtAC_Sprint">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACamStopCamShake" displayName="rgtAC_StopSprintShake" displayType="TOGGLE"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- ##### Combat ##### -->
+	<!-- Normal Combat -->
+	<Group id="ACcbt" displayName="Mods.rgtAC_ModName.rgtAC_Combat.rgtAC_NormalCombat">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACcbtZoomOutCtrl" displayName="rgtAC_CombatActionCameraZoomOutControl" displayType="TOGGLE"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Locked to Target -->
+	<Group id="AClck" displayName="Mods.rgtAC_ModName.rgtAC_Combat.rgtAC_LockedtoTarget">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Signs -->
+	<Group id="ACsign" displayName="Mods.rgtAC_ModName.rgtAC_Combat.rgtAC_Signs">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Aiming -->
+	<Group id="ACaim" displayName="Mods.rgtAC_ModName.rgtAC_Combat.rgtAC_Aim">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Fist Fight -->
+	<Group id="ACfist" displayName="Mods.rgtAC_ModName.rgtAC_Combat.rgtAC_FistFight">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- ##### Horse Riding ##### -->
+	<!-- Horse Exploration -->
+	<Group id="AChorse" displayName="Mods.rgtAC_ModName.rgtAC_HorseRiding.rgtAC_Exploring">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Horse Combat -->
+	<Group id="AChorseCbt" displayName="Mods.rgtAC_ModName.rgtAC_HorseRiding.rgtAC_InCombat">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Sailing -->
+	<Group id="ACboat" displayName="Mods.rgtAC_ModName.rgtAC_Sailing">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACboatZoomCtrl" displayName="rgtAC_SailingZoomControl" displayType="TOGGLE"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- ##### Witcher Senses ##### -->
+	<!-- WS Exteriors -->
+	<Group id="ACws" displayName="Mods.rgtAC_ModName.rgtAC_WitcherSenses.rgtAC_Exteriors">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- WS Interiors -->
+	<Group id="ACwsInt" displayName="Mods.rgtAC_ModName.rgtAC_WitcherSenses.rgtAC_Interiors">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- WS Swimming -->
+	<Group id="ACwsSwim" displayName="Mods.rgtAC_ModName.rgtAC_WitcherSenses.rgtAC_Swimming">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- WS Horse Riding -->
+	<Group id="ACwsHorse" displayName="Mods.rgtAC_ModName.rgtAC_WitcherSenses.rgtAC_HorseRiding">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Interiors -->
+	<Group id="ACint" displayName="Mods.rgtAC_ModName.rgtAC_Interiors">
+		<VisibleVars>
+			<Var id="ACamON" displayName="rgtAC_ACamON" displayType="TOGGLE"/>
+			<Var id="ACmode" displayName="rgtAC_CameraMode" displayType="OPTIONS">
+					<OptionsArray>
+						<Option id="0" displayName="rgtAC_Normal">
+							<Entry varId="ACmode" value="0"/>
+						</Option>
+						<Option id="1" displayName="rgtAC_Preset">
+							<Entry varId="ACmode" value="1"/>
+						</Option>
+					</OptionsArray>
+			</Var>
+			<Var id="ACOffsetX" displayName="rgtAC_ACamX" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetY" displayName="rgtAC_ACamY" displayType="SLIDER;-50;50;1000"/>
+			<Var id="ACOffsetZ" displayName="rgtAC_ACamZ" displayType="SLIDER;-50;50;1000"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Auto Center and Pitch Options -->
+	<Group id="ACautoCenterPitch" displayName="Mods.rgtAC_ModName.rgtAC_AutoCenterAndPitch">
+		<VisibleVars>
+			<Var id="ACautoCenter" displayName="rgtAC_AutoCentering" displayType="OPTIONS">
+                <OptionsArray>
+                    <Option id="0" displayName="rgtAC_OFF">
+                        <Entry varId="ACautoCenter" value="0"/>
+                    </Option>
+                    <Option id="1" displayName="rgtAC_WhenSprinting">
+                        <Entry varId="ACautoCenter" value="1"/>
+                    </Option>
+					<Option id="2" displayName="rgtAC_AlwaysON">
+                        <Entry varId="ACautoCenter" value="2"/>
+                    </Option>
+				</OptionsArray>
+			</Var>
+			<Var id="ACminPitch" displayName="rgtAC_MinPitch" displayType="SLIDER;-80;-10;70"/>
+			<Var id="ACmaxPitch" displayName="rgtAC_MaxPitch" displayType="SLIDER;10;80;70"/>
+			<Var id="ACpitchOptions" displayName="rgtAC_DesiredPitchControlMode" displayType="OPTIONS">
+                <OptionsArray>
+                    <Option id="0" displayName="rgtAC_OFF">
+                        <Entry varId="ACpitchOptions" value="0"/>
+                    </Option>
+                    <Option id="1" displayName="rgtAC_WhenSprinting">
+                        <Entry varId="ACpitchOptions" value="1"/>
+                    </Option>
+					<Option id="2" displayName="rgtAC_AlwaysON">
+                        <Entry varId="ACpitchOptions" value="2"/>
+                    </Option>
+				</OptionsArray>
+			</Var>
+			<Var id="ACdesiredPitch" displayName="rgtAC_DesiredPitch" displayType="SLIDER;-80;80;160"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- FOV -->
+	<Group id="ACfovgroup" displayName="Mods.rgtAC_ModName.rgtAC_FOV">
+		<VisibleVars>
+			<Var id="ACFOV" displayName="rgtAC_FOV" displayType="SLIDER;40;90;50"/>
+		</VisibleVars>
+	</Group>
+	
+	<!-- Other Settings -->
+	<Group id="RGTotherSettings" displayName="Mods.rgtAC_ModName.rgtAC_OtherSettings">
+		<VisibleVars>
+			<Var overrideGroup="AbsoluteCameraOther" id="RGToffsetPerHit" displayName="rgtAC_OffsetAmountPerKeyHit" displayType="SLIDER;0.1;2;19"/>
+			<Var overrideGroup="AbsoluteCameraOther" id="ACUST" displayName="rgtAC_ACUST" displayType="TOGGLE"/>
+		</VisibleVars>
+	</Group>
+	
+</UserConfig>
