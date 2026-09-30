@@ -1,4 +1,4 @@
-// Absolute Camera 4.x - 2022, pMarK
+// Absolute Camera 5.x - 2026, pMarK
 // Camera Preset - Witcher Senses
 
 function GetACPresetWitcherSenses() : SAPresetCamera

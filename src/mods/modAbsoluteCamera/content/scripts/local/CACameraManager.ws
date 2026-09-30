@@ -1,4 +1,4 @@
-// Absolute Camera 4.x - 2022, pMarK
+// Absolute Camera 5.x - 2026, pMarK
 // Manager Class
 
 class CACameraManager {
@@ -399,11 +399,6 @@ class CACameraManager {
 					HorseRidingCamera.PosZ = HorseRidingCamera.UnlockedPos.Z;
 				}
 
-				if(isPlayerMountingHorse)
-				{
-					HorseRidingCamera.PosY -= 1.f;
-				}
-
 				return HorseRidingCamera;
 			case 'ACfist' :
 				FistCombatCamera.IsOn = gConfig.GetVarValue(grpName, 'ACamON');
@@ -683,7 +678,8 @@ class CACameraManager {
 		{
 			grpName = 'ACclue';
 		}
-		else if(thePlayer.GetCurrentStateName() == 'ExplorationMeditation' ||
+		else if(thePlayer.GetCurrentStateName() == 'Meditation' ||
+			thePlayer.GetCurrentStateName() == 'MeditationWaiting' ||
 			( thePlayer.GetPlayerAction() == PEA_Meditation && gConfig.GetVarValue('ACmed', 'ACexpMedForPoPON')))
 		{
 			grpName = 'ACmed';
@@ -1439,6 +1435,155 @@ class CACameraManager {
 			}
 		}
 	}
+
+    private var horseCameraSession, horseCameraOwnsNative, horseCameraPrepared, horseCameraBlending, horseCameraInstant : bool;
+    private var horseCameraPlayer : CR4Player;
+    private var horseCameraStartTime, horseCameraStartDistance, horseCameraStartHeight, horseCameraStartFov : float;
+    private var horseCameraStartOffset : Vector;
+
+    public function ResetHorseCamera()
+    {
+        horseCameraSession = false;
+        horseCameraOwnsNative = false;
+        horseCameraPrepared = false;
+        horseCameraBlending = false;
+        horseCameraInstant = false;
+        horseCameraPlayer = NULL;
+    }
+
+    public function BeginHorseCamera(instantMount : bool)
+    {
+        ResetHorseCamera();
+        horseCameraSession = true;
+        horseCameraPlayer = thePlayer;
+        horseCameraInstant = instantMount;
+    }
+
+    private function CanUseHorseCamera() : bool
+    {
+        var group : name;
+        if (!horseCameraSession || !thePlayer || horseCameraPlayer != thePlayer || !thePlayer.IsAlive())
+            return false;
+        if (thePlayer.IsQuestCameraRequestActive())
+            return false;
+        if (thePlayer.GetCurrentStateName() != 'MountHorse' && thePlayer.GetCurrentStateName() != 'HorseRiding')
+            return false;
+        group = GetMenuGroupName();
+        return (group == 'AChorse' || group == 'AChorseCbt') && GetIsCurrentCameraOn();
+    }
+
+    public function SuppressNativeHorseCamera(instantMount : bool) : bool
+    {
+        if (!CanUseHorseCamera())
+        {
+            // The caller will activate the native camera; do not restore it twice.
+            horseCameraOwnsNative = false;
+            horseCameraPrepared = false;
+            return false;
+        }
+        horseCameraOwnsNative = true;
+        horseCameraInstant = horseCameraInstant || instantMount;
+        return true;
+    }
+
+    public function PrepareHorseCamera(out moveData : SCameraMovementData) : bool
+    {
+        var camera : CCustomCamera;
+        if (!horseCameraSession)
+            return false;
+        if (!thePlayer || horseCameraPlayer != thePlayer || !thePlayer.IsAlive() ||
+            (thePlayer.GetCurrentStateName() != 'MountHorse' && thePlayer.GetCurrentStateName() != 'HorseRiding'))
+        {
+            ResetHorseCamera();
+            return false;
+        }
+        if (!CanUseHorseCamera())
+        {
+            horseCameraPrepared = false;
+            horseCameraBlending = false;
+            // Leave a quest camera in charge; restore only after its request ends.
+            if (horseCameraOwnsNative && !thePlayer.IsQuestCameraRequestActive())
+            {
+                horseCameraOwnsNative = false;
+                theGame.ActivateHorseCamera(true, 0.4f, false);
+            }
+            return false;
+        }
+        camera = theGame.GetGameCamera();
+        if (!camera || !moveData.pivotPositionController || !moveData.pivotDistanceController || !moveData.pivotRotationController)
+            return false;
+        if (!horseCameraPrepared)
+        {
+            // Capture before controller changes or either AC state applies its framing.
+            horseCameraStartOffset = moveData.cameraLocalSpaceOffset;
+            horseCameraStartDistance = moveData.pivotDistanceValue;
+            horseCameraStartHeight = moveData.pivotPositionController.offsetZ;
+            horseCameraStartFov = camera.fov;
+            horseCameraStartTime = theGame.GetEngineTimeAsSeconds();
+            horseCameraPrepared = true;
+            horseCameraBlending = true;
+        }
+        if (!horseCameraOwnsNative)
+        {
+            // AC may be enabled after the original activation was allowed through.
+            theGame.ActivateHorseCamera(false, 0.0f);
+            horseCameraOwnsNative = true;
+        }
+        return true;
+    }
+
+    public function ApplyHorseCamera(out moveData : SCameraMovementData, dt : float, fastMovement : bool) : bool
+    {
+        var camera : CCustomCamera;
+        var target : SACamera;
+        var alpha, distance : float;
+        if (!PrepareHorseCamera(moveData))
+            return false;
+        camera = theGame.GetGameCamera();
+        target = GetCamera();
+        camera.ChangePivotRotationController('Exploration');
+        camera.ChangePivotDistanceController('Default');
+        camera.ChangePivotPositionController('Default');
+        moveData.pivotRotationController = camera.GetActivePivotRotationController();
+        moveData.pivotDistanceController = camera.GetActivePivotDistanceController();
+        moveData.pivotPositionController = camera.GetActivePivotPositionController();
+        moveData.pivotPositionController.SetDesiredPosition(thePlayer.GetWorldPosition());
+
+        if (horseCameraBlending)
+        {
+            // Absolute elapsed time prevents tick/post-tick calls advancing twice.
+            alpha = ClampF((theGame.GetEngineTimeAsSeconds() - horseCameraStartTime) / 0.4f, 0.0f, 1.0f);
+            if (horseCameraInstant)
+                alpha = 1.0f;
+            alpha = alpha * alpha * (3.0f - 2.0f * alpha);
+            distance = LerpF(alpha, horseCameraStartDistance, 3.5f);
+            moveData.pivotDistanceController.SetDesiredDistance(distance);
+            moveData.pivotDistanceValue = distance;
+            moveData.pivotDistanceVelocity = 0.0f;
+            moveData.pivotPositionController.offsetZ = LerpF(alpha, horseCameraStartHeight, 2.3f);
+            moveData.cameraLocalSpaceOffset = LerpV(horseCameraStartOffset, Vector(target.PosX, target.PosY, target.PosZ), alpha);
+            moveData.cameraLocalSpaceOffsetVel = Vector(0.0f, 0.0f, 0.0f);
+            camera.fov = LerpF(alpha, horseCameraStartFov, GetFOV());
+            if (alpha >= 1.0f)
+                horseCameraBlending = false;
+        }
+        else
+        {
+            moveData.pivotDistanceController.SetDesiredDistance(3.5f);
+            moveData.pivotPositionController.offsetZ = 2.3f;
+            DampVectorSpring(moveData.cameraLocalSpaceOffset, moveData.cameraLocalSpaceOffsetVel, Vector(target.PosX, target.PosY, target.PosZ), 0.5f, dt);
+            camera.fov = GetFOV();
+        }
+        if ((GetPicthMode() == 1 && fastMovement) || GetPicthMode() == 2)
+            moveData.pivotRotationController.SetDesiredPitch(GetDesiredPitch());
+        else
+            camera.SetAllowAutoRotation(false);
+        moveData.pivotRotationController.maxPitch = GetMaxPitch();
+        moveData.pivotRotationController.minPitch = GetMinPitch();
+        if ((GetAutoCenterMode() == 1 && fastMovement) || GetAutoCenterMode() == 2)
+            moveData.pivotRotationController.SetDesiredHeading(thePlayer.GetHeading());
+        return true;
+    }
 }
 
 function GetACameraManager() : CACameraManager
