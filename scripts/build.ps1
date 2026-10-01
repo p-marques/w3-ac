@@ -29,8 +29,8 @@ if (-not (Test-Path -LiteralPath $versionPath -PathType Leaf)) {
     throw "Missing version file: $versionPath"
 }
 $version = [System.IO.File]::ReadAllText($versionPath).Trim()
-if ($version -notmatch '^[0-9]+\.[0-9]+(?:\.[0-9]+)?$') {
-    throw 'VERSION must contain major.minor or major.minor.patch (for example, 3.0).'
+if ($version -cnotmatch '^[0-9]+\.[0-9]+(?:\.[0-9]+)?(?:-beta)?$') {
+    throw 'VERSION must contain major.minor or major.minor.patch, optionally followed by -beta (for example, 5.1-beta).'
 }
 
 # Explicit runtime allowlists exclude obsolete replacements and development files.

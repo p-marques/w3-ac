@@ -106,6 +106,7 @@ function OnGameCameraTick( out moveData : SCameraMovementData, dt : float )
 			moveData.pivotRotationController = theGame.GetGameCamera().GetActivePivotRotationController();
 			moveData.pivotDistanceController = theGame.GetGameCamera().GetActivePivotDistanceController();
 			moveData.pivotPositionController = theGame.GetGameCamera().GetActivePivotPositionController();
+			aCameraManager.ApplyMeditationRecenter(moveData);
 
 			moveData.pivotPositionController.SetDesiredPosition( thePlayer.GetWorldPosition() );
 			moveData.pivotDistanceController.SetDesiredDistance( 3.5f );
@@ -2318,4 +2319,126 @@ function OnDeath( damageAction : W3DamageAction )
     if (parent.aCameraManager)
         parent.aCameraManager.ResetHorseCamera();
     return wrappedMethod(damageAction);
+}
+
+@addField(CR4CommonMenu)
+private var acMeditationInputKeys : array<EInputKey>;
+
+@addField(CR4CommonMenu)
+private var acMeditationInputCommands : array<name>;
+
+@addField(CR4CommonMenu)
+private var acMeditationReservedKeys : array<EInputKey>;
+
+@wrapMethod(CR4CommonMenu)
+function fetchCurrentHotkeys() : void
+{
+    wrappedMethod();
+    acMeditationInputKeys.Clear();
+    acMeditationInputCommands.Clear();
+    acMeditationReservedKeys.Clear();
+
+    // Native menu setup performs this lookup before entering EMPTY_CONTEXT.
+    CacheACMeditationCommandKeys('RGTcheckOffsets');
+    CacheACMeditationCommandKeys('ACResetCamera');
+    CacheACMeditationCommandKeys('ACToggleOnOff');
+    CacheACMeditationCommandKeys('RGTShoulderToggle');
+    CacheACMeditationCommandKeys('RGTsaveCamera');
+    CacheACMeditationCommandKeys('RGTAddOffsetX');
+    CacheACMeditationCommandKeys('RGTAddOffsetY');
+    CacheACMeditationCommandKeys('RGTAddOffsetZ');
+    CacheACMeditationCommandKeys('RGTRemOffsetX');
+    CacheACMeditationCommandKeys('RGTRemOffsetY');
+    CacheACMeditationCommandKeys('RGTRemOffsetZ');
+
+    ReserveACMeditationPanelKeys('PanelInv');
+    ReserveACMeditationPanelKeys('PanelChar');
+    ReserveACMeditationPanelKeys('PanelMapPC');
+    ReserveACMeditationPanelKeys('PanelJour');
+    ReserveACMeditationPanelKeys('PanelAlch');
+    ReserveACMeditationPanelKeys('PanelBestiary');
+    ReserveACMeditationPanelKeys('PanelGlossary');
+    ReserveACMeditationPanelKeys('PanelMeditation');
+    ReserveACMeditationPanelKeys('PanelCrafting');
+}
+
+@addMethod(CR4CommonMenu)
+private function CacheACMeditationCommandKeys(command : name)
+{
+    var keys : array<EInputKey>;
+    var i, index : int;
+    theInput.GetPCKeysForAction(command, keys);
+    for (i = 0; i < keys.Size(); i += 1)
+    {
+        if (keys[i] != IK_None)
+        {
+            index = acMeditationInputKeys.FindFirst(keys[i]);
+            if (index < 0)
+            {
+                acMeditationInputKeys.PushBack(keys[i]);
+                acMeditationInputCommands.PushBack(command);
+            }
+            else if (acMeditationInputCommands[index] != command)
+            {
+                // An empty command keeps an ambiguous key disabled for this cache.
+                acMeditationInputCommands[index] = '';
+            }
+        }
+    }
+}
+
+@addMethod(CR4CommonMenu)
+private function ReserveACMeditationPanelKeys(actionName : name)
+{
+    var keys : array<EInputKey>;
+    var i : int;
+    theInput.GetPCKeysForAction(actionName, keys);
+    for (i = 0; i < keys.Size(); i += 1)
+    {
+        if (keys[i] != IK_None && acMeditationReservedKeys.FindFirst(keys[i]) < 0)
+            acMeditationReservedKeys.PushBack(keys[i]);
+    }
+}
+
+@addMethod(CR4CommonMenu)
+private function IsACMeditationReservedKey(keyCode : EInputKey) : bool
+{
+    return acMeditationReservedKeys.FindFirst(keyCode) >= 0
+        || keyCode == IK_None || keyCode == IK_Escape || keyCode == IK_Enter
+        || keyCode == IK_E || keyCode == IK_Space || keyCode == IK_Tab || keyCode == IK_Backspace
+        || keyCode == IK_Left || keyCode == IK_Right || keyCode == IK_Up || keyCode == IK_Down
+        || keyCode == IK_W || keyCode == IK_A || keyCode == IK_S || keyCode == IK_D
+        || keyCode == IK_Home || keyCode == IK_End || keyCode == IK_PageUp || keyCode == IK_PageDown;
+}
+
+@wrapMethod(CR4CommonMenu)
+function OnHotkeyTriggered(keyCode : EInputKey)
+{
+    var result : bool;
+    var clock : CR4MeditationClockMenu;
+    var stateName : name;
+    var index : int;
+    result = wrappedMethod(keyCode);
+
+    if (!thePlayer || !thePlayer.aCameraManager || theGame.GetGuiManager().GetCommonMenu() != this)
+        return result;
+
+    clock = (CR4MeditationClockMenu)GetLastChild();
+    stateName = thePlayer.GetCurrentStateName();
+    if (!clock || (stateName != 'Meditation' && stateName != 'MeditationWaiting') || IsACMeditationReservedKey(keyCode))
+        return result;
+
+    index = acMeditationInputKeys.FindFirst(keyCode);
+    if (index >= 0 && acMeditationInputCommands[index] != '')
+        thePlayer.aCameraManager.ExecuteACInputCommand(acMeditationInputCommands[index]);
+
+    return result;
+}
+
+@wrapMethod(W3PlayerWitcherStateMeditationBase)
+function OnLeaveState( nextStateName : name )
+{
+    if (parent.aCameraManager && nextStateName != 'Meditation' && nextStateName != 'MeditationWaiting')
+        parent.aCameraManager.ClearMeditationRecenter();
+    return wrappedMethod(nextStateName);
 }

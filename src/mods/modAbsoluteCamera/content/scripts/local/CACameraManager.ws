@@ -1052,6 +1052,9 @@ class CACameraManager {
 		if(grpName == 'ACsprint')
 			camera = SprintCamera;
 
+		meditationRecenterPending = !camera.IsOn && grpName == 'ACmed' &&
+			(thePlayer.GetCurrentStateName() == 'Meditation' || thePlayer.GetCurrentStateName() == 'MeditationWaiting');
+
 		gConfig.SetVarValue( grpName, 'ACamON', !camera.IsOn);
 		theGame.SaveUserSettings();
 
@@ -1270,170 +1273,68 @@ class CACameraManager {
 
 	event OnCommRGTCheckStatus( action:SInputAction )
 	{
-		if( IsPressed( action ) )
-		{
-			DisplayCameraInfo();
-		}
+		if(IsPressed(action))
+			ExecuteACInputCommand('RGTcheckOffsets');
 	}
 
 	event OnCommACResetCamera(action:SInputAction)
 	{
 		if(IsPressed(action))
-		{
-			if(GetIsCurrentCameraOn())
-				LockCamera(GetMenuGroupName());
-		}
+			ExecuteACInputCommand('ACResetCamera');
 	}
 
 	event OnCommACToggleOnOff( action:SInputAction )
 	{
-		if( IsPressed( action ) )
-		{
-			ToggleCameraOnOff();
-		}
+		if(IsPressed(action))
+			ExecuteACInputCommand('ACToggleOnOff');
 	}
 
 	event OnCommRGTShoulderToggle( action:SInputAction )
 	{
 		if(IsPressed(action))
-		{
-			ToggleShoulder();
-		}
+			ExecuteACInputCommand('RGTShoulderToggle');
 	}
 
 	event OnCommRGTsaveCamera( action:SInputAction )
 	{
-		if( IsPressed( action ) )
-		{
-			if(GetIsCurrentCameraOn())
-				SaveCamera();
-		}
+		if(IsPressed(action))
+			ExecuteACInputCommand('RGTsaveCamera');
 	}
 
 	event OnCommRGTAddOffsetX( action:SInputAction )
 	{
-		var grpName : name;
-		var camera : SACamera;
-		grpName = GetMenuGroupName();
-		camera = GetCameraByState(grpName);
-
 		if(IsPressed(action))
-		{
-			if(camera.IsOn)
-			{
-				if(camera.IsLocked)
-				{
-					UnlockCamera(grpName);
-				}
-
-				MoveCamera(grpName, 'plusX');
-			}
-		}
+			ExecuteACInputCommand('RGTAddOffsetX');
 	}
 
 	event OnCommRGTAddOffsetY( action:SInputAction )
 	{
-		var grpName : name;
-		var camera : SACamera;
-		grpName = GetMenuGroupName();
-		camera = GetCameraByState(grpName);
-
 		if(IsPressed(action))
-		{
-			if(camera.IsOn)
-			{
-				if(camera.IsLocked)
-				{
-					UnlockCamera(grpName);
-				}
-
-				MoveCamera(grpName, 'plusY');
-			}
-		}
+			ExecuteACInputCommand('RGTAddOffsetY');
 	}
 
 	event OnCommRGTAddOffsetZ( action:SInputAction )
 	{
-		var grpName : name;
-		var camera : SACamera;
-		grpName = GetMenuGroupName();
-		camera = GetCameraByState(grpName);
-
 		if(IsPressed(action))
-		{
-			if(camera.IsOn)
-			{
-				if(camera.IsLocked)
-				{
-					UnlockCamera(grpName);
-				}
-
-				MoveCamera(grpName, 'plusZ');
-			}
-		}
+			ExecuteACInputCommand('RGTAddOffsetZ');
 	}
 
 	event OnCommRGTRemOffsetX( action:SInputAction )
 	{
-		var grpName : name;
-		var camera : SACamera;
-		grpName = GetMenuGroupName();
-		camera = GetCameraByState(grpName);
-
 		if(IsPressed(action))
-		{
-			if(camera.IsOn)
-			{
-				if(camera.IsLocked)
-				{
-					UnlockCamera(grpName);
-				}
-
-				MoveCamera(grpName, 'minuX');
-			}
-		}
+			ExecuteACInputCommand('RGTRemOffsetX');
 	}
 
 	event OnCommRGTRemOffsetY( action:SInputAction )
 	{
-		var grpName : name;
-		var camera : SACamera;
-		grpName = GetMenuGroupName();
-		camera = GetCameraByState(grpName);
-
 		if(IsPressed(action))
-		{
-			if(camera.IsOn)
-			{
-				if(camera.IsLocked)
-				{
-					UnlockCamera(grpName);
-				}
-
-				MoveCamera(grpName, 'minuY');
-			}
-		}
+			ExecuteACInputCommand('RGTRemOffsetY');
 	}
 
 	event OnCommRGTRemOffsetZ( action:SInputAction )
 	{
-		var grpName : name;
-		var camera : SACamera;
-		grpName = GetMenuGroupName();
-		camera = GetCameraByState(grpName);
-
 		if(IsPressed(action))
-		{
-			if(camera.IsOn)
-			{
-				if(camera.IsLocked)
-				{
-					UnlockCamera(grpName);
-				}
-
-				MoveCamera(grpName, 'minuZ');
-			}
-		}
+			ExecuteACInputCommand('RGTRemOffsetZ');
 	}
 
     private var horseCameraSession, horseCameraOwnsNative, horseCameraPrepared, horseCameraBlending, horseCameraInstant : bool;
@@ -1583,6 +1484,160 @@ class CACameraManager {
         if ((GetAutoCenterMode() == 1 && fastMovement) || GetAutoCenterMode() == 2)
             moveData.pivotRotationController.SetDesiredHeading(thePlayer.GetHeading());
         return true;
+    }
+
+    public function ExecuteACInputCommand(command : name)
+    {
+        var grpName : name;
+        var camera : SACamera;
+        if (command == 'RGTcheckOffsets')
+        {
+            DisplayCameraInfo();
+            return;
+        }
+        if (command == 'ACResetCamera')
+        {
+            if(GetIsCurrentCameraOn())
+                LockCamera(GetMenuGroupName());
+            return;
+        }
+        if (command == 'ACToggleOnOff')
+        {
+            ToggleCameraOnOff();
+            return;
+        }
+        if (command == 'RGTShoulderToggle')
+        {
+            ToggleShoulder();
+            return;
+        }
+        if (command == 'RGTsaveCamera')
+        {
+            if(GetIsCurrentCameraOn())
+                SaveCamera();
+            return;
+        }
+        if (command == 'RGTAddOffsetX')
+        {
+            grpName = GetMenuGroupName();
+            camera = GetCameraByState(grpName);
+            if(camera.IsOn)
+            {
+                if(camera.IsLocked)
+                {
+                    UnlockCamera(grpName);
+                }
+
+                MoveCamera(grpName, 'plusX');
+            }
+            return;
+        }
+        if (command == 'RGTAddOffsetY')
+        {
+            grpName = GetMenuGroupName();
+            camera = GetCameraByState(grpName);
+            if(camera.IsOn)
+            {
+                if(camera.IsLocked)
+                {
+                    UnlockCamera(grpName);
+                }
+
+                MoveCamera(grpName, 'plusY');
+            }
+            return;
+        }
+        if (command == 'RGTAddOffsetZ')
+        {
+            grpName = GetMenuGroupName();
+            camera = GetCameraByState(grpName);
+            if(camera.IsOn)
+            {
+                if(camera.IsLocked)
+                {
+                    UnlockCamera(grpName);
+                }
+
+                MoveCamera(grpName, 'plusZ');
+            }
+            return;
+        }
+        if (command == 'RGTRemOffsetX')
+        {
+            grpName = GetMenuGroupName();
+            camera = GetCameraByState(grpName);
+            if(camera.IsOn)
+            {
+                if(camera.IsLocked)
+                {
+                    UnlockCamera(grpName);
+                }
+
+                MoveCamera(grpName, 'minuX');
+            }
+            return;
+        }
+        if (command == 'RGTRemOffsetY')
+        {
+            grpName = GetMenuGroupName();
+            camera = GetCameraByState(grpName);
+            if(camera.IsOn)
+            {
+                if(camera.IsLocked)
+                {
+                    UnlockCamera(grpName);
+                }
+
+                MoveCamera(grpName, 'minuY');
+            }
+            return;
+        }
+        if (command == 'RGTRemOffsetZ')
+        {
+            grpName = GetMenuGroupName();
+            camera = GetCameraByState(grpName);
+            if(camera.IsOn)
+            {
+                if(camera.IsLocked)
+                {
+                    UnlockCamera(grpName);
+                }
+
+                MoveCamera(grpName, 'minuZ');
+            }
+            return;
+        }
+    }
+
+    private var meditationRecenterPending : bool;
+
+    public function ClearMeditationRecenter()
+    {
+        meditationRecenterPending = false;
+    }
+
+    public function ApplyMeditationRecenter(out moveData : SCameraMovementData)
+    {
+        var stateName : name;
+        var heading : float;
+        if (!meditationRecenterPending)
+            return;
+
+        stateName = thePlayer.GetCurrentStateName();
+        if (stateName != 'Meditation' && stateName != 'MeditationWaiting')
+        {
+            ClearMeditationRecenter();
+            return;
+        }
+        if (GetMenuGroupName() != 'ACmed' || thePlayer.IsQuestCameraRequestActive())
+            return;
+
+        // Vanilla meditation leaves a front-facing target on the shared controller.
+        heading = thePlayer.GetHeading();
+        moveData.pivotRotationValue.Yaw = heading;
+        moveData.pivotRotationVelocity.Yaw = 0.0f;
+        moveData.pivotRotationController.SetDesiredHeading(heading);
+        ClearMeditationRecenter();
     }
 }
 

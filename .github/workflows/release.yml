@@ -36,17 +36,19 @@ jobs:
 
           function ConvertTo-ReleaseVersion {
               param([string] $Text)
-              if ($Text -cnotmatch '^[0-9]+\.[0-9]+(?:\.[0-9]+)?$') {
-                  throw 'VERSION must contain major.minor or major.minor.patch (for example, 3.0).'
+              if ($Text -cnotmatch '^[0-9]+\.[0-9]+(?:\.[0-9]+)?(?:-beta)?$') {
+                  throw 'VERSION must contain major.minor or major.minor.patch, optionally followed by -beta (for example, 5.1-beta).'
               }
-              [bigint[]] $parts = @($Text.Split('.') | ForEach-Object { [bigint]::Parse($_) })
+              [bigint[]] $parts = @($Text.Split('-')[0].Split('.') | ForEach-Object { [bigint]::Parse($_) })
               if ($parts.Count -eq 2) { $parts += [bigint] 0 }
+              # Stable follows beta for the same numeric version.
+              $parts += [bigint] $(if ($Text.EndsWith('-beta')) { 0 } else { 1 })
               return ,$parts
           }
 
           function Compare-ReleaseVersion {
               param([bigint[]] $Left, [bigint[]] $Right)
-              for ($i = 0; $i -lt 3; $i++) {
+              for ($i = 0; $i -lt 4; $i++) {
                   $comparison = $Left[$i].CompareTo($Right[$i])
                   if ($comparison -ne 0) { return $comparison }
               }
@@ -79,7 +81,7 @@ jobs:
           $highestTag = $null
           foreach ($release in $releases) {
               # Legacy non-version tags do not participate in numeric ordering.
-              if ($release.tag_name -cnotmatch '^v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)$') { continue }
+              if ($release.tag_name -cnotmatch '^v?([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:-beta)?)$') { continue }
               $existing = ConvertTo-ReleaseVersion $Matches[1]
               if ($release.draft) {
                   if ((Compare-ReleaseVersion $candidate $existing) -eq 0) {
@@ -98,9 +100,9 @@ jobs:
               exit 0
           }
 
-          # Reserve numeric aliases too: v3.0 and v3.0.0 are the same version.
+          # Reserve aliases too: v5.1-beta and v5.1.0-beta are the same version.
           foreach ($existingTag in @(Get-GitHubPages 'tags')) {
-              if ($existingTag.name -cnotmatch '^v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)$') { continue }
+              if ($existingTag.name -cnotmatch '^v?([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:-beta)?)$') { continue }
               $existing = ConvertTo-ReleaseVersion $Matches[1]
               if ((Compare-ReleaseVersion $candidate $existing) -eq 0) {
                   throw "Tag '$($existingTag.name)' already exists without a qualifying published release. Review it manually; this workflow will not reuse, move, or delete tags."
